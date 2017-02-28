@@ -1,0 +1,29 @@
+# Pi-hole: A black hole for Internet advertisements
+# (c) 2015, 2016 by Jacob Salmela
+# Network-wide ad blocking via your Raspberry Pi
+# http://pi-hole.net
+# Updates ad sources every week
+#
+# Pi-hole is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This file is under source-control of the Pi-hole installation and update
+# scripts, any changes made to this file will be overwritten when the softare
+# is updated or re-installed. Please make any changes to the appropriate crontab
+# or other cron file snippets.
+
+# Pi-hole: Update the ad sources once a week on Sunday at 01:59
+#          Download any updates from the adlists
+59 1    * * 7   root    PATH="$PATH:/usr/local/bin/" pihole updateGravity
+
+# Pi-hole: Update Pi-hole! Uncomment to enable auto update
+#30 2    * * 7   root    PATH="$PATH:/usr/local/bin/" pihole updatePihole
+
+# Pi-hole: Flush the log daily at 00:00 so it doesn't get out of control
+#          Stats will be viewable in the Web interface thanks to the cron job above
+#          The flush script will use logrotate if available
+00 00   * * *   root    PATH="$PATH:/usr/local/bin/" pihole flush
+
+@reboot root /usr/sbin/logrotate /etc/pihole/logrotate
